@@ -1,11 +1,14 @@
-import UserInfo from "@/components/dashboard/UserInfo";
-import Layout from "@/components/header/Layout";
 
-export default function Dashboard() {
+import Layout from "@/components/header/Layout";
+import TeamComp from "@/components/team/Team";
+
+
+export default function Team() {
+
   return (
     <Layout>
       <div>
-        <UserInfo />
+      <TeamComp />
       </div>
     </Layout>
 

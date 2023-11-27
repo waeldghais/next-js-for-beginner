@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "./Button";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -10,15 +11,34 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+
   const router = useRouter();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
-      setError("All fields are necessary.");
+    if (!name) {
+      setError("Name is required.");
       return;
     }
+
+    if (!email) {
+      setError("Email is required.");
+      return;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Email is invalid.");
+      return;
+    }
+
+    if (!password) {
+      setError("Password is required.");
+      return;
+    } else if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+    
 
     try {
       const resUserExists = await fetch("api/userExists", {
@@ -62,7 +82,7 @@ export default function RegisterForm() {
 
   return (
     <div className="grid place-items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-green-400">
+      <div className="shadow-lg p-5 rounded-lg border-t-4 border-gray-800">
         <h1 className="text-xl font-bold my-4">Register</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -81,10 +101,7 @@ export default function RegisterForm() {
             type="password"
             placeholder="Password"
           />
-          <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2">
-            Register
-          </button>
-
+          <Button label="Register" />
           {error && (
             <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
               {error}
